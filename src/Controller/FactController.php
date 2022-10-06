@@ -30,6 +30,26 @@ class FactController extends AbstractController
         $routeParams = $request->attributes->get('_route_params');
         return new Response(combinaison($routeParams['n'], $routeParams['p']));
     }
+
+    public function factoCombi(Request $request) {
+        if(null !== $request->query->get('p') && null !== $request->query->get('n'))
+        {
+            $n=intval($request->query->get('n'));
+            $p=intval($request->query->get('p'));
+            $r=factorielle($n)/(factorielle($p)*factorielle($n-$p));
+            return $this->render('factoCombi.html.twig', [
+                'p'=>$p,
+                'n'=>$n,
+                'r'=>$r,
+            ]);
+        } else if (null !== $request->query->get('k')) 
+        {
+            $k=intval($request->query->get('k'));
+            $r=factorielle($k);
+        } else {
+            return $this->render('base.html.twig', []);
+        }
+    }
 }
 
 function factorielle($n)
