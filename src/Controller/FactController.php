@@ -10,19 +10,26 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FactController extends AbstractController
 {
-    #[Route('/fact', name: 'app_fact')]
-    public function index(): JsonResponse
-    {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/FactController.php',
-        ]);
-    }
+    // #[Route('/', name: 'app_fact')]
+    // public function index(): Response
+    // {
+    //     return $this->render('factocombi.html.twig');
+    // }
+
+    // #[Route('/fact', name: 'app_fact')]
+    // public function index(): JsonResponse
+    // {
+    //     return $this->json([
+    //         'message' => 'Welcome to your new controller!',
+    //         'path' => 'src/Controller/FactController.php',
+    //     ]);
+    // }
 
     #[Route('/fact/{n<\d+>}')]
     public function fact(Request $request): Response {
         $routeParams = $request->attributes->get('_route_params');
-        return new Response(factorielle($routeParams['n']));
+        $fact_result = factorielle($routeParams['n']);
+        return new Response($fact_result);
     }
 
     #[Route('/combi/{n<\d+>}/{p<\d+>}')]
@@ -31,23 +38,28 @@ class FactController extends AbstractController
         return new Response(combinaison($routeParams['n'], $routeParams['p']));
     }
 
-    public function factoCombi(Request $request) {
+    #[Route('/')]
+    public function factoCombi(Request $request): Response {
         if(null !== $request->query->get('p') && null !== $request->query->get('n'))
         {
             $n=intval($request->query->get('n'));
             $p=intval($request->query->get('p'));
-            $r=factorielle($n)/(factorielle($p)*factorielle($n-$p));
-            return $this->render('factoCombi.html.twig', [
-                'p'=>$p,
+            $r=combinaison($n, $p);
+            return $this->render('factocombi.html.twig', [
                 'n'=>$n,
-                'r'=>$r,
+                'p'=>$p,
+                'r'=>$r
             ]);
         } else if (null !== $request->query->get('k')) 
         {
             $k=intval($request->query->get('k'));
             $r=factorielle($k);
+            dump($r);
+            return $this->render('factocombi.html.twig', [
+                'r'=>$r
+            ]);
         } else {
-            return $this->render('base.html.twig', []);
+            return $this->render('factocombi.html.twig',[]);
         }
     }
 }

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </head>
+    <body>
+        {# {% block body %}{% endblock %} #}
+        <h1>Calcul de n!</h1>
+        <form action="" method="get" >
+            <input type="number" name="k" placeholder="n">
+            <button type="submit" class="btn btn-default">OK</button>
+        </form>
+        <h1>Calcul des combinaisons de n éléments dans p places</h1>
+        <form action="" method="get" >
+            <input type="number" name="n" placeholder="n">
+            <input type="number" name="p" placeholder="p">
+            <button type="submit" class="btn btn-default">OK</button>
+        </form>
+        <h1>Résultat</h1>
+        {% if r is defined %}
+            {% if (n is defined) and (p is defined) %}
+            <h2>Combinaisons({{n}},{{p}})={{r}}</h2>
+            {% else %}
+            <h2>{{r}}</h2>
+            {% endif %}
+        {% endif %}
+    </body>
+</html>
